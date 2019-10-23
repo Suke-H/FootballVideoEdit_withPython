@@ -1,4 +1,4 @@
-ループさせるimport wx
+import wx
 
 # ボタンのクリックイベント
 def click(event):
@@ -7,7 +7,7 @@ def click(event):
     #テキストがキーボード入力されるまでループさせる
     while not input_text:
         # テキスト入力ダイアログ
-        dlg = wx.TextEntryDialog(None, u'テキストを入力してください', u'タイトル部分')
+        dlg = wx.TextEntryDialog(None, u'作成するフォルダ名を入力してください', u'フォルダ名入力')
         dlg.ShowModal()
 
         # 入力値を取得

@@ -7,7 +7,11 @@ class FileDropTarget(wx.FileDropTarget):
         self.window = window
 
     def OnDropFiles(self, x, y, files):
-        self.window.text_entry.SetLabel(files[0])
+        print(y, files)
+        if y <= 100:
+            print("wide")
+        else:
+            print("verch")
 
         return 0
 
@@ -15,26 +19,39 @@ class FileDropTarget(wx.FileDropTarget):
 class App(wx.Frame):
     """ GUI """
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(500, 200), style=wx.DEFAULT_FRAME_STYLE)
+        wx.Frame.__init__(self, parent, id, title, size=(400, 400), style=wx.DEFAULT_FRAME_STYLE)
 
         # パネル
-        p = wx.Panel(self, wx.ID_ANY)
+        DDPanel = wx.Panel(self, -1)
+        DDPanel.SetBackgroundColour("green")
+        EditPanel = wx.Panel(self, -1)
+        EditPanel.SetBackgroundColour("red")
 
-        label = wx.StaticText(p, wx.ID_ANY, 'ここにファイルをドロップしてください', style=wx.SIMPLE_BORDER | wx.TE_CENTER)
-        label.SetBackgroundColour("#e0ffff")
+        # パネルのレイアウト
+        PanelLayout = wx.BoxSizer(wx.VERTICAL)
+        PanelLayout.Add(DDPanel, proportion=1, flag=wx.EXPAND)
+        PanelLayout.Add(EditPanel, proportion=1, flag=wx.EXPAND)
+        self.SetSizer(PanelLayout)
 
-        # ドロップ対象の設定
-        label.SetDropTarget(FileDropTarget(self))
+        ###DDpanel###############################################
 
-        # テキスト入力ウィジット
-        self.text_entry = wx.TextCtrl(p, wx.ID_ANY)
+        # ラベル
+        wideLabel = wx.StaticText(DDPanel, -1, 'wideのフォルダをドラッグ＆ドロップ', style=wx.SIMPLE_BORDER | wx.TE_CENTER)
+        wideLabel.SetBackgroundColour("#e0ffff")
+        verchLabel = wx.StaticText(DDPanel, -1, 'verchのフォルダをドラッグ＆ドロップ', style=wx.SIMPLE_BORDER | wx.TE_CENTER)
+        verchLabel.SetBackgroundColour("#e0ffff")
 
-        # レイアウト
-        layout = wx.BoxSizer(wx.VERTICAL)
-        layout.Add(label, flag=wx.EXPAND | wx.ALL, border=10, proportion=1)
-        layout.Add(self.text_entry, flag=wx.EXPAND | wx.ALL, border=10)
-        p.SetSizer(layout)
+        # DDpanelをドロップ対象に設定
+        DDPanel.SetDropTarget(FileDropTarget(self))
 
+        # DDpanelの中身をレイアウト
+        DDLayout = wx.BoxSizer(wx.HORIZONTAL)
+        DDLayout.Add(wideLabel, proportion=1, flag=wx.EXPAND | wx.RIGHT, border=5)
+        DDLayout.Add(verchLabel, proportion=1, flag=wx.EXPAND | wx.LEFT, border=5)
+        DDPanel.SetSizer(DDLayout)
+
+        ##############################################################
+        
         self.Show()
 
 app = wx.App()
