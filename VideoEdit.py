@@ -7,11 +7,11 @@ class FileDropTarget(wx.FileDropTarget):
         self.window = window
 
     def OnDropFiles(self, x, y, files):
-        print(y, files)
-        if y <= 100:
-            print("wide")
+        print(x, files)
+        if x <= 400:
+            self.window.wideLabel.SetLabel(files[0])
         else:
-            print("verch")
+            self.window.verchLabel.SetLabel(files[0])
 
         return 0
 
@@ -19,7 +19,7 @@ class FileDropTarget(wx.FileDropTarget):
 class App(wx.Frame):
     """ GUI """
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(400, 400), style=wx.DEFAULT_FRAME_STYLE)
+        wx.Frame.__init__(self, parent, id, title, size=(800, 400), style=wx.DEFAULT_FRAME_STYLE)
 
         # パネル
         DDPanel = wx.Panel(self, -1)
@@ -46,8 +46,8 @@ class App(wx.Frame):
 
         # DDpanelの中身をレイアウト
         DDLayout = wx.BoxSizer(wx.HORIZONTAL)
-        DDLayout.Add(wideLabel, proportion=1, flag=wx.EXPAND | wx.RIGHT, border=5)
-        DDLayout.Add(verchLabel, proportion=1, flag=wx.EXPAND | wx.LEFT, border=5)
+        DDLayout.Add(wideLabel, proportion=1, flag=wx.EXPAND | wx.ALL, border=5)
+        DDLayout.Add(verchLabel, proportion=1, flag=wx.EXPAND | wx.ALL, border=5)
         DDPanel.SetSizer(DDLayout)
 
         ##############################################################
